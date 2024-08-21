@@ -48,6 +48,7 @@ jobs:
             target/${{matrix.target}}/${{env.PROJECT_NAME}}.exe
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
+          token: ${{ secrets.TOKEN }}
 
   linux:
     runs-on: ${{ matrix.runner }}
@@ -93,6 +94,7 @@ jobs:
             target/${{matrix.target}}/${{env.PROJECT_NAME}}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
+          token: ${{ secrets.TOKEN }}
 
   macos:
     runs-on: ${{ matrix.runner }}
@@ -134,3 +136,4 @@ jobs:
             target/${{matrix.target}}/${{env.PROJECT_NAME}}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
           generate_release_notes: true
+          token: ${{ secrets.TOKEN }}
