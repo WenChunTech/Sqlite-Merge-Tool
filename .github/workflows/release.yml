@@ -1,4 +1,4 @@
-name: cross-release
+name: release-binary
 on:
     workflow_dispatch:
     push:
@@ -40,6 +40,12 @@ jobs:
           cargo build --release --target "${{matrix.target}}"
           mv target/${{matrix.target}}/release/${{env.PROJECT_NAME}}.exe ${{env.PROJECT_NAME}}_${{matrix.target}}.exe
 
+      - name : upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{env.PROJECT_NAME}}_${{matrix.target}}.exe
+          path: ./${{env.PROJECT_NAME}}_${{matrix.target}}.exe
+
       - name: upload Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -47,6 +53,7 @@ jobs:
           files: |
             ${{env.PROJECT_NAME}}_${{matrix.target}}.exe
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          body_path: CHANGELOG.md
           generate_release_notes: true
           token: ${{ secrets.TOKEN }}
 
@@ -87,6 +94,12 @@ jobs:
           fi
           mv target/${{matrix.target}}/release/${{env.PROJECT_NAME}} ${{env.PROJECT_NAME}}_${{matrix.target}}
 
+      - name : upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{env.PROJECT_NAME}}_${{matrix.target}}
+          path: ./${{env.PROJECT_NAME}}_${{matrix.target}}
+
       - name: upload Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -94,6 +107,7 @@ jobs:
           files: |
             ${{env.PROJECT_NAME}}_${{matrix.target}}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          body_path: CHANGELOG.md
           generate_release_notes: true
           token: ${{ secrets.TOKEN }}
 
@@ -129,6 +143,12 @@ jobs:
           cargo build --release --target "${{matrix.target}}"
           mv target/${{matrix.target}}/release/${{env.PROJECT_NAME}} ${{env.PROJECT_NAME}}_${{matrix.target}}
 
+      - name : upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{env.PROJECT_NAME}}_${{matrix.target}}
+          path: ./${{env.PROJECT_NAME}}_${{matrix.target}}
+
       - name: upload Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -136,5 +156,6 @@ jobs:
           files: |
             ${{env.PROJECT_NAME}}_${{matrix.target}}
           prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+          body_path: CHANGELOG.md
           generate_release_notes: true
           token: ${{ secrets.TOKEN }}
